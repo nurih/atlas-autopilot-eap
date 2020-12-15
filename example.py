@@ -1,5 +1,6 @@
 from  cli import generator, cli_args
-from load_generator import IntGenSpec
+
+from gen_spec import IntGenSpec
 
 # Setup any fields you wish to target with queries
 generator.with_field('score', IntGenSpec(0, 10))

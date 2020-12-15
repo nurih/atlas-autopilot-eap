@@ -1,6 +1,5 @@
 import argparse
-import load_generator
-from load_generator import *
+from load_generator import LoadGenerator
 
 parser = argparse.ArgumentParser(
     description='Run queries against a mongo cluster')
