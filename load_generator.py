@@ -1,4 +1,4 @@
-import pymongo
+from pymongo import MongoClient
 
 
 class LoadGenerator:
@@ -23,7 +23,7 @@ class LoadGenerator:
         return self
 
     def run(self, count, limit=10):
-        collection = pymongo.MongoClient(self.mongo_url) \
+        collection = MongoClient(self.mongo_url) \
             .get_database(self.db_name) \
             .get_collection(self.collection_name)
 

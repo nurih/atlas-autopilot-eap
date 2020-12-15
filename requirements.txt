@@ -1,1 +1,1 @@
-pymongo[tls,srv,gssapi]
+pymongo[tls,srv]
