@@ -1,11 +1,20 @@
+import argparse
 import load_generator
 from load_generator import *
 
-gen = LoadGenerator().with_url(
-    'mongodb://localhost:27017/').with_db('test').with_collection('scores')
+parser = argparse.ArgumentParser(
+    description='Run queries against a mongo cluster')
+parser.add_argument('--url', '--connection', required=True, type=str,
+                    help='Mongo connection string')
+parser.add_argument('--db', required=True, type=str, help='Database name')
+parser.add_argument('--collection', required=True,
+                    type=str, help='Collection name')
 
-gen.with_field('score', IntGenSpec(0, 10))
+parser.add_argument('--iteration_count',  type=int,
+                    help='Collection name', default=100)
 
-doc_count = gen.run(100)
+cli_args = parser.parse_args()
 
-print(f'{doc_count} found')
+generator = LoadGenerator().with_url(cli_args.url).with_db(
+    cli_args.db).with_collection(cli_args.collection)
+
