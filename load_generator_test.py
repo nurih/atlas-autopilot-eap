@@ -1,7 +1,7 @@
-import load_generator
 import unittest
-from load_generator import IntGenSpec, LoadGenerator, ObjectIdGenSpec
+from gen_spec import IntGenSpec, ObjectIdGenSpec
 from bson import objectid
+from load_generator import LoadGenerator
 
 
 class Test_LoadGenerator(unittest.TestCase):
@@ -22,24 +22,6 @@ class Test_LoadGenerator(unittest.TestCase):
     def test__generate_query(self):
         actual = LoadGenerator().with_field('foo', ObjectIdGenSpec())._generate_query()
         self.assertIsNotNone(actual['foo']['$eq'])
-
-
-class Test_GenSpec(unittest.TestCase):
-    def test_objectid(self):
-        actual = ObjectIdGenSpec().generate()
-        self.assertIsInstance(actual, objectid.ObjectId)
-
-    def test_objectid(self):
-        actual = ObjectIdGenSpec().eq()
-        self.assertIsInstance(actual['$eq'], objectid.ObjectId)
-
-    def test_int(self):
-        actual = IntGenSpec(1, 3).generate()
-        self.assertIn(actual, [1, 2, 3])
-
-    def test_eq_int(self):
-        actual = IntGenSpec(1, 2).eq()
-        self.assertIsInstance(actual['$eq'], int)
 
 
 if __name__ == '__main__':
