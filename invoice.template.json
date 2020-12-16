@@ -1,0 +1,63 @@
+{
+    "_id": {
+        "$inc": {
+            "start": 0
+        }
+    },
+    "created": "$date",
+    "customer": {
+        "_id": "$integer",
+        "name": "$name",
+        "email": "$email"
+    },
+    "shipTo": {
+        "street": "$address",
+        "city": "$city",
+        "country": "$country"
+    },
+    "items": {
+        "$array": {
+            "of": {
+                "sku": {
+                    "$join": {
+                        "array": [
+                            {
+                                "$letter": {
+                                    "casing": "upper"
+                                }
+                            },
+                            {
+                                "$number": {
+                                    "min": 100,
+                                    "max": 999
+                                }
+                            }
+                        ],
+                        "sep": ""
+                    }
+                },
+                "item": {
+                    "$join": {
+                        "array": [
+                            "$word",
+                            "$word"
+                        ],
+                        "sep": " "
+                    }
+                },
+                "qty": {
+                    "$integer": {
+                        "min": 1,
+                        "max": 12
+                    }
+                }
+            },
+            "number": {
+                "$integer": {
+                    "min": 1,
+                    "max": 4
+                }
+            }
+        }
+    }
+}
