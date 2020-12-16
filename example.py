@@ -1,9 +1,10 @@
 from  cli import generator, cli_args
 
-from gen_spec import IntGenSpec
+from gen_spec import IntGenSpec, StringGenSpec, ObjectIdGenSpec
 
 # Setup any fields you wish to target with queries
-generator.with_field('score', IntGenSpec(0, 10))
+generator.with_field('customer._id', IntGenSpec(0, 1000000), method='gte_lt')
+generator.with_field('customer.name', StringGenSpec().upper(), method='gte_lt')
 
 # Run
 try:

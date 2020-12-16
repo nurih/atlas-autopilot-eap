@@ -18,8 +18,9 @@ class LoadGenerator:
         self.collection_name = collection_name
         return self
 
-    def with_field(self, field_name, gen_spec):
-        self.query_fields[field_name] = gen_spec
+    def with_field(self, field_name, gen_spec, method='eq'):
+        self.query_fields[field_name] = {
+            'generator': gen_spec, 'method': method}
         return self
 
     def run(self, count, limit=10):
@@ -32,12 +33,12 @@ class LoadGenerator:
             query = self._generate_query()
             for d in collection.find(query).limit(limit):
                 doc_count = doc_count+1
-
+            print(query)
         return doc_count
 
     def _generate_query(self):
         query = {}
-        for k, v in self.query_fields.items():
-            query[k] = v.eq()
+        for k, gen in self.query_fields.items():
+            query[k] = getattr(gen['generator'], gen['method'])()
 
         return query
