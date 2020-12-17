@@ -1,8 +1,8 @@
 import unittest
-from gen_spec import IntGenSpec,  ObjectIdGenSpec, StringGenSpec,DateGenSpec
+from gen_spec import IntGenSpec,  ObjectIdGenSpec, StringGenSpec, DateGenSpec
 from bson import objectid
 import string
-from datetime import *
+from datetime import datetime
 
 ALPHABET = 'abc123'
 
@@ -12,7 +12,7 @@ class Test_GenSpec(unittest.TestCase):
         actual = ObjectIdGenSpec().generate()
         self.assertIsInstance(actual, objectid.ObjectId)
 
-    def test_objectid(self):
+    def test_objectid_eq(self):
         actual = ObjectIdGenSpec().eq()
         self.assertIsInstance(actual['$eq'], objectid.ObjectId)
 
@@ -60,8 +60,7 @@ class Test_GenSpec(unittest.TestCase):
     def test_date_generage(self):
         subject = DateGenSpec()
         actual = subject.generate()
-        self.assertTrue(actual < subject.end and actual >= subject.start )
-
+        self.assertTrue(actual < subject.end and actual >= subject.start)
 
 
 if __name__ == '__main__':
