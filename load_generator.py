@@ -5,6 +5,7 @@ class LoadGenerator:
 
     def __init__(self):
         self.query_fields = {}
+        self.sort_spec = None
 
     def with_url(self, mongo_url):
         self.mongo_url = mongo_url
@@ -23,18 +24,36 @@ class LoadGenerator:
             'generator': gen_spec, 'method': method}
         return self
 
+    def with_sort(self, sort_spec):
+        self.sort_spec = sort_spec
+        return self
+
     def run(self, count, limit=10):
-        collection = MongoClient(self.mongo_url) \
-            .get_database(self.db_name) \
-            .get_collection(self.collection_name)
+        db = MongoClient(self.mongo_url) \
+            .get_database(self.db_name)
+
+        # .get_collection(self.collection_name)
 
         doc_count = 0
-        for i in range(0, count):
+        for ordinal in range(0, count):
             query = self._generate_query()
-            for d in collection.find(query).limit(limit):
-                doc_count = doc_count+1
-            print(query)
+            cmd = self.create_command(ordinal, self.collection_name, query, self.sort_spec, limit)
+            for d in db.command(cmd):
+                doc_count = doc_count + 1                
+            print(ordinal, doc_count, query)
         return doc_count
+
+    def create_command(self, number, collection_name, query, sort, limit):
+        result = {
+            "find": collection_name,
+            "filter": query,
+            "limit": limit,
+            "comment": f'load_generator {number}'
+        }
+
+        if sort is not None:
+            result['sort'] = sort
+        return result
 
     def _generate_query(self):
         query = {}
