@@ -1,6 +1,9 @@
+import random
+from datetime import *
 from bson.objectid import ObjectId
 from random import randrange, choice
 import string
+from datetime import datetime, timedelta
 
 
 class GenSpec:
@@ -49,3 +52,13 @@ class StringGenSpec(GenSpec):
     
     def generate(self):
         return ''.join(choice(self.alphabet) for i in range(self.length))
+
+class DateGenSpec(GenSpec):
+    def __init__(self, start = datetime.now(), day_range = 365):
+        self.start = start
+        self.day_range = day_range
+        self.end = self.start + timedelta(days= self.day_range)
+
+    def generate(self):
+        return self.start + (self.end - self.start) * random.random()
+        
