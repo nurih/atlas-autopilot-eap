@@ -1,3 +1,4 @@
+import logging
 from pymongo import MongoClient
 
 
@@ -40,7 +41,7 @@ class LoadGenerator:
             cmd = self.create_command(ordinal, self.collection_name, query, self.sort_spec, limit)
             for d in db.command(cmd):
                 doc_count = doc_count + 1                
-            print(ordinal, doc_count, query)
+            logging.info((ordinal, doc_count, cmd['filter'], cmd.get('sort', '_unsorted_')))
         return doc_count
 
     def create_command(self, number, collection_name, query, sort, limit):
