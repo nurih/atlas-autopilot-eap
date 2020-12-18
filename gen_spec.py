@@ -41,7 +41,7 @@ class StringGenSpec(GenSpec):
         self.length = length
 
     def printable(self):
-        self.alphabet = string.ascii_letters
+        self.alphabet = string.printable
         
         return self
 

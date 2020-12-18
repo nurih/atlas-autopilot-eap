@@ -30,7 +30,7 @@ class Test_GenSpec(unittest.TestCase):
 
     def test_string_printbale_alphabet(self):
         actual = StringGenSpec().printable()
-        self.assertEqual(actual.alphabet, string.ascii_letters)
+        self.assertEqual(actual.alphabet, string.printable)
 
     def test_string_printbale_upper_alphabet(self):
         actual = StringGenSpec().upper()
